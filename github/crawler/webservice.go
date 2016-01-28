@@ -41,14 +41,14 @@ func (g *Forum) GetPath() string {
 
 
 func (g *Forum) GetBoardsFromCrawler(params martini.Params) (int, string) {
-	if len(params) == 0 {
+	//if len(params) == 0 {
 		encodedEntries, err := json.Marshal(g.GetAllEntries())
 		if err != nil {
 			return http.StatusInternalServerError, "internal WebGetBoardsFromCrawler error"
 		}
 
 		return http.StatusOK, string(encodedEntries)
-	}
+	//}
 
 	return http.StatusOK, ""
 	/*

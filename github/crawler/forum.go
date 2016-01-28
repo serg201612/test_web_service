@@ -42,27 +42,27 @@ func NewForum() *Forum {
 
 func (g *Forum) GetAllEntries() []*ForumEntry {
 	entries := make([]*ForumEntry, 0)
-	forum_entrie := &ForumEntry{1,"First Board Name from crawler","First Board Link from crawler",}
+	forum_entrie := &ForumEntry{1,"First_Board_Name_from_crawler","First_Board_Link_from_crawler",}
 	entries = append(entries, forum_entrie)
-	forum_entrie = &ForumEntry{2,"Second Board Name from crawler","Second Board Link from crawler",}
+	forum_entrie = &ForumEntry{2,"Second_Board_Name_from_crawler","Second_Board_Link_from_crawler",}
 	entries = append(entries, forum_entrie)
 	return entries
 }
 
 func (g *Forum) GetAllEntriesFromDB() []*ForumEntry {
 	entries := make([]*ForumEntry, 0)
-	forum_entrie := &ForumEntry{3,"First Board Name from db","First Board Link from db",}
+	forum_entrie := &ForumEntry{3,"First_Board_Name_from_db","First_Board_Link_from_db",}
 	entries = append(entries, forum_entrie)
-	forum_entrie = &ForumEntry{4,"Second Board Name from db","Second Board Link from db",}
+	forum_entrie = &ForumEntry{4,"Second_Board_Name_from_db","Second_Board_Link_from_db",}
 	entries = append(entries, forum_entrie)
 	return entries
 }
 
 func (g *Forum) GetAllTopicEntries() []*TopicEntry {
 	entries := make([]*TopicEntry, 0)
-	topic_entrie := &TopicEntry{1,"First topic name from crawler","First topic link from crawler",}
+	topic_entrie := &TopicEntry{1,"First_topic_name_from_crawler","First_topic_link_from_crawler",}
 	entries = append(entries, topic_entrie)
-	topic_entrie = &TopicEntry{2,"Second topic name from crawler","Second topic link from crawler",}
+	topic_entrie = &TopicEntry{2,"Second_topic_name_from_crawler","Second_topic_link_from_crawler",}
 	entries = append(entries, topic_entrie)
 	return entries
 }
@@ -77,11 +77,16 @@ func (g *Forum) GetAllTopicEntriesFromDB() []*TopicEntry {
 }
 
 func (g *Forum) GetTopicContent() string {
-	return "Content from crawler"
+	//return "Content from crawler"
+	contentEntry := &ContentEntry{0, "content_from_crawler", "",}
+	
+	return contentEntry.Content
+  
 	
 }
 
 func (g *Forum) GetTopicContentFromDB() string {
-	return "Content from crawler"
+	contentEntry := &ContentEntry{0, "content_from_db", "",}
+	return contentEntry.Content
 	
 }
