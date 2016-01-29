@@ -12,29 +12,29 @@ import (
 
 
 type ForumEntry struct {
-	Id      int
-	Email   string
-	Title   string
-	Content string
+	Id     string
+	Name   string
+	Link   string
 }
 
 type TopicEntry struct {
-	Id      int
-	Link   string
+	Id     string
 	Name   string
+	Link   string
 }
 
 type ContentEntry struct {
-	Id      int
-	Content   string
+	Id      string
+	Content string
+	Link    string
 }
 
 type Forum struct {
 	forumData []*ForumEntry
 	topicData []*TopicEntry
-	contentEntry ContentEntry
-
+	contentData []*ContentEntry
 }
+
 
 
 
@@ -45,8 +45,7 @@ var requestUrl = flag.String("request_url", "",
 	"Host and port to send the request to")
 var requestMethod = flag.String("request_method", "GET",
 	"HTTP request method")
-var requestData = flag.String("request_data", "",
-	"Marshalled JSON data")
+var requestData = flag.String("request_data", "", "Marshalled JSON data")
 
 // doRequest executes an HTTP request to the given requestUrl using the given
 // requestMethod and requestData.
@@ -82,6 +81,12 @@ func main() {
 
 	flag.Parse()
 
+	//fmt.Println(*requestUrl)
+	//fmt.Println(*requestMethod)
+	fmt.Println(*requestData)
+	
+	
+	
 	if len(*requestUrl) == 0 {
 		// We need a request URL.
 		fmt.Println("--request_url must be provided")
@@ -114,36 +119,33 @@ func main() {
 		return
 	}
 
-	// Print received data.
-	//fmt.Println(string(responseData))
 	
-	//var forumEntry ForumEntry
-	var forum Forum
+	forum := &Forum{
+	make([]*ForumEntry, 0),
+	make([]*TopicEntry, 0),
+	make([]*ContentEntry, 0),}
+		
 	err = json.Unmarshal(responseData, &forum.forumData)
 	if err != nil {
-		//fmt.Println("Error 1 :", err)
+		fmt.Println("Error client forumsdata :", err)
 	}else {
 	  for _, f := range forum.forumData{
-	    fmt.Println("", f)
+	    if f.Id != "" {
+	    fmt.Printf("ID=%s Name=%s\n", f.Id, f.Name)
+	    }
 	  }
 	}
 
-	err = json.Unmarshal(responseData, &forum.topicData)
+	err = json.Unmarshal(responseData, &forum.contentData)
 	if err != nil {
-		//fmt.Println("Error 2 :", err)
+		fmt.Println("Error client contentdata :", err)
 	}else {
-	  for _, t := range forum.topicData{
-	    fmt.Println("", t)
+	  for _, c := range forum.contentData{
+	    if c.Content != "" {
+	      fmt.Println(c.Content)
+	    }
 	  }
 	}
-	
-	err = json.Unmarshal(responseData, &forum.contentEntry.Content)
-	if err != nil {
-		//fmt.Println("Error 3 :", err)
-	}else {
-	  fmt.Println("", forum.contentEntry)
-	}
-	
 	
 }
 
