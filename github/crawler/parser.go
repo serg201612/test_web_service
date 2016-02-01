@@ -168,7 +168,7 @@ func getContent(body string) {
 		li1 := strings.Index(href_body,"\">")
 		href_body = href_body[li1+2:len(href_body)]
 		href_body = strings.Replace(href_body,"<br />", " ", -1)
-		fmt.Println(href_body)
+		//fmt.Println(href_body)
 		re := regexp.MustCompile("<[^>]*>")
 		href_body = re.ReplaceAllString(href_body, "")
 		contententry := &ContentEntry{"", href_body, ""}
