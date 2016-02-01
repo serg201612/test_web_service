@@ -83,7 +83,7 @@ func getForums(body string) {
 		forum_title := href_body[li1+2:len(href_body)]
 		forum_id := href_body[li2+7:li1]+".0"
 		//fmt.Println(href_body)
-		forumentry := &ForumEntry{forum_id, forum_title, ""}
+		forumentry := &ForumEntry{"id", forum_title,  forum_id, }
 		forumData = append(forumData, forumentry)
 		//fmt.Println(forumEntry)
 		find_href_end = false 
@@ -128,7 +128,7 @@ func getTopics(body string) {
 		    topic_title := href_body[li1+2:len(href_body)]
 		    topic_id := href_body[li2+16:li1]
 		    //fmt.Println(topic_id, topic_title)
-		    topicentry := &TopicEntry{topic_id, topic_title, ""}
+		    topicentry := &TopicEntry{"id", topic_title, topic_id, }
 		    topicData = append(topicData, topicentry)
 		  }
 		  find_href_end = false 
@@ -168,7 +168,7 @@ func getContent(body string) {
 		li1 := strings.Index(href_body,"\">")
 		href_body = href_body[li1+2:len(href_body)]
 		href_body = strings.Replace(href_body,"<br />", " ", -1)
-		//fmt.Println(href_body)
+		fmt.Println(href_body)
 		re := regexp.MustCompile("<[^>]*>")
 		href_body = re.ReplaceAllString(href_body, "")
 		contententry := &ContentEntry{"", href_body, ""}
@@ -256,11 +256,19 @@ func GetForumList(url string, type_request string) []*ForumEntry{
 	request_type = type_request
 	fmt.Println(request_url)
 	c.Run(request_url)
+	for _, f := range forumData{
+	  db_forum_update(f.Link, f.Name, "forums")
+	}
+	return forumData
+}
+
+func GetForumListFromDB() []*ForumEntry{
+	forumData = db_forum_select("forums")
 	return forumData
 }
 
 
-func GetTopicList(url string, type_request string) []*TopicEntry{
+func GetTopicList(forum_ref string, url string, type_request string) []*TopicEntry{
 	boards = make(map[string]int)
 	ext := &Ext{&gocrawl.DefaultExtender{}}
 	opts := gocrawl.NewOptions(ext)
@@ -274,10 +282,19 @@ func GetTopicList(url string, type_request string) []*TopicEntry{
 	request_type = type_request
 	fmt.Println(request_url)
 	c.Run(request_url)
+	for _, f := range topicData{
+	  db_topic_update(forum_ref, f.Link, f.Name, "topics")
+	}
 	return topicData
 }
 
-func GetContent(url string, type_request string) []*ContentEntry{
+func GetTopicListFromDB(forum_ref string) []*TopicEntry{
+	topicData = db_topic_select(forum_ref, "topics")
+	return topicData
+}
+
+
+func GetContent(topic_ref string, url string, type_request string) []*ContentEntry{
 	boards = make(map[string]int)
 	ext := &Ext{&gocrawl.DefaultExtender{}}
 	opts := gocrawl.NewOptions(ext)
@@ -291,6 +308,16 @@ func GetContent(url string, type_request string) []*ContentEntry{
 	request_type = type_request
 	fmt.Println(request_url)
 	c.Run(request_url)
+	content := ""
+	for _, f := range contentData{
+	  //db_content_update(topic_ref, f.Link, f.Content, "content")
+	  content += f.Content
+	}
+	db_content_update(topic_ref, "", content, "content")
 	return contentData
 }
 
+func GetContentsFromDB(topic_ref string) []*ContentEntry{
+	contentData = db_content_select(topic_ref, "content")
+	return contentData
+}

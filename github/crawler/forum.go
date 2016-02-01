@@ -49,34 +49,34 @@ func (g *Forum) GetAllEntries() []*ForumEntry {
 
 func (g *Forum) GetAllEntriesFromDB() []*ForumEntry {
 	entries := make([]*ForumEntry, 0)
-	entries = GetForumList("http://bm26rwk32m7u7rec.onion.link/", "forums") 
+	entries = GetForumListFromDB()
 	return entries
 }
 
 func (g *Forum) GetAllTopicEntries(params martini.Params) []*TopicEntry {
   	id := params["id"]
 	entries := make([]*TopicEntry, 0)
-	entries = GetTopicList("http://bm26rwk32m7u7rec.onion.link/index.php?board="+id, "topics") 
+	entries = GetTopicList(id, "http://bm26rwk32m7u7rec.onion.link/index.php?board="+id, "topics") 
 	return entries
 }
 
 func (g *Forum) GetAllTopicEntriesFromDB(params martini.Params) []*TopicEntry {
   	id := params["id"]
 	entries := make([]*TopicEntry, 0)
-	entries = GetTopicList("http://bm26rwk32m7u7rec.onion.link/index.php?board="+id, "topics") 
+	entries = GetTopicListFromDB(id) 
 	return entries
 }
 
 func (g *Forum) GetContentsFromCrawler(params martini.Params) []*ContentEntry {
 	entries := make([]*ContentEntry, 0)
   	id := params["id"]
-	entries = GetContent("http://bm26rwk32m7u7rec.onion.link/index.php?topic="+id, "content") 
+	entries = GetContent(id, "http://bm26rwk32m7u7rec.onion.link/index.php?topic="+id, "content") 
 	return entries
 }
 
 func (g *Forum) GetContentsFromDB(params martini.Params) []*ContentEntry {
 	entries := make([]*ContentEntry, 0)
   	id := params["id"]
-	entries = GetContent("http://bm26rwk32m7u7rec.onion.link/index.php?topic="+id, "content") 
+	entries = GetContentsFromDB(id) 
 	return entries
 }

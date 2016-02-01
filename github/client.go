@@ -126,12 +126,13 @@ func main() {
 	make([]*ContentEntry, 0),}
 		
 	err = json.Unmarshal(responseData, &forum.forumData)
+	
 	if err != nil {
 		fmt.Println("Error client forumsdata :", err)
 	}else {
 	  for _, f := range forum.forumData{
-	    if f.Id != "" {
-	    fmt.Printf("ID=%s Name=%s\n", f.Id, f.Name)
+	    if f.Link != "" {
+	    fmt.Printf("Link=%s Name=%s \n", f.Link, f.Name)
 	    }
 	  }
 	}
